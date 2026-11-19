@@ -1,0 +1,9 @@
+batch_id,platform,region,doc_count,batch_tokens,cum_tokens_N,cum_vocab_V,valid_signal_rate,trial_cum_avg_quality,marginal_snr_slope,marginal_vocab_gain,status
+1,ptt,local,300,2400,2400,2030,0.9,0.9,0.0,,ACCEPT
+2,youtube,resource,350,3100,5500,3045,0.89,0.8944,-0.0056,0.5,ACCEPT
+3,web_threads,local,400,4200,9700,4040,0.87,0.8838,-0.0105,0.3268,ACCEPT
+4,reddit,diaspora,420,5300,15000,4990,0.91,0.8931,0.0093,0.2351,ACCEPT
+5,youtube,local,480,6000,21000,5890,0.88,0.8893,-0.0037,0.1804,ACCEPT
+6,web_threads,diaspora,500,6500,27500,6120,0.88,0.8871,-0.0022,0.039,ACCEPT
+7,ptt,local,600,8000,35500,8900,0.38,0.7728,-0.1143,,REJECT_BATCH
+8,reddit,diaspora,450,6500,34000,6310,0.9,0.8896,0.0025,0.031,ACCEPT

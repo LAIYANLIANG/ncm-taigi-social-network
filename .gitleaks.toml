@@ -1,0 +1,45 @@
+# Gitleaks configuration for Networks, Crowds, and Markets (Taigi Social Network Project)
+# Used by both local pre-commit/pre-push hooks and GitHub Actions CI/CD.
+
+title = "NCM Taigi Project Security & PII Gitleaks Rules"
+
+[extend]
+useDefault = true
+
+[[rules]]
+id = "gemini-personal-share-url"
+description = "Personal Gemini conversation URL leaked in document or code"
+regex = '''https://gemini\.google\.com/(?:app|share)/[A-Za-z0-9_-]{8,}'''
+tags = ["privacy", "url-leak"]
+
+[[rules]]
+id = "social-media-cookie-secret"
+description = "Potential authenticated FB/IG/Threads/X session cookie value"
+regex = '''(?:c_user=\d{6,}|xs=[A-Za-z0-9%_-]{12,}|sessionid=[A-Za-z0-9%_-]{12,}|ds_user_id=\d{6,}|Cookie:\s*[^\r\n]*(?:c_user=|xs=|sessionid=|csrftoken=))'''
+tags = ["cookie", "session-hijack"]
+
+[[rules]]
+id = "local-macos-or-windows-user-path"
+description = "Hardcoded local user home directory path exposing local username"
+regex = '''(?:/Users/[A-Za-z0-9._-]+/|C:\\\\Users\\\\[A-Za-z0-9._-]+\\\\)'''
+tags = ["privacy", "portability"]
+
+[[rules]]
+id = "hardcoded-production-pii-salt"
+description = "Hardcoded production PII hashing salt instead of environment variable"
+regex = '''SALT\s*=\s*["'][^"']*privacy_salt["']'''
+tags = ["pii", "hardcoded-secret"]
+
+[[rules]]
+id = "cambridge-core-copyright-watermark"
+description = "Copyrighted Easley & Kleinberg Cambridge Core watermark text"
+regex = '''(?:Downloaded from https://www\.cambridge\.org/core|Cambridge Core terms of use)'''
+tags = ["copyright", "ip-risk"]
+
+[allowlist]
+description = "Allow security rule definitions, templates, and educational non-secret examples"
+paths = [
+  '''^\.gitleaks\.toml$''',
+  '''^cicd_與_安全檢查範本/''',
+  '''^\.github/workflows/''',
+]

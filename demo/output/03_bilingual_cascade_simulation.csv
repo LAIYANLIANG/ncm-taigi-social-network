@@ -1,0 +1,9 @@
+a_payoff_global,b_payoff_taigi,c_bilingual_cost,f_A,f_B,f_AB,regime
+1.5,1.0,0.1,1.0,0.0,0.0,Infiltration_B_Extinct
+1.5,1.0,0.3,1.0,0.0,0.0,Infiltration_B_Extinct
+1.5,1.0,0.6,0.0,0.9714,0.0286,Bilingual_Buffer_B_Survives
+1.5,1.0,0.8,0.0,0.9714,0.0286,Bilingual_Buffer_B_Survives
+1.5,1.0,0.95,0.0,0.9714,0.0286,Bilingual_Buffer_B_Survives
+1.5,1.0,1.2,1.0,0.0,0.0,Direct_Conquest
+1.5,1.0,1.5,1.0,0.0,0.0,Direct_Conquest
+2.2,1.0,0.8,1.0,0.0,0.0,Infiltration_B_Extinct

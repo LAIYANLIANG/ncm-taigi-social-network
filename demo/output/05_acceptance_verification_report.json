@@ -1,0 +1,108 @@
+{
+  "overall_status": "PASS",
+  "gates": {
+    "G1_data_and_privacy_compliance": {
+      "passed": true,
+      "platforms_count": 4,
+      "regions_count": 3,
+      "pii_masked_count": 25,
+      "sqlite_tables": [
+        "community_time_slices",
+        "corpus_batches",
+        "interactions",
+        "nodes"
+      ]
+    },
+    "G2_sampling_quality_validation": {
+      "passed": true,
+      "heaps_beta": 0.4446,
+      "heaps_K": 66.2233,
+      "heaps_r2": 0.9856,
+      "final_accepted_vocab_gain": 0.031,
+      "rejected_batches": [
+        7
+      ],
+      "shannon_entropy_platform": 0.9501,
+      "shannon_entropy_region": 0.8878
+    },
+    "G3_hits_and_ablation_verification": {
+      "passed": true,
+      "textbook_newspapers_reweighted_match": [
+        19,
+        19,
+        31,
+        24,
+        5,
+        15,
+        12
+      ],
+      "textbook_newspapers_limit_auth": [
+        0.199,
+        0.199,
+        0.304,
+        0.205,
+        0.043,
+        0.042,
+        0.008
+      ],
+      "textbook_newspapers_l1_diff": 0.002131,
+      "spectral_eigenvector_l1_error": 2.987538265437633e-11,
+      "ablation_troll_auth_unsigned": 0.068269,
+      "ablation_troll_auth_signed": 0.0,
+      "perturbation_mean_spearman_auth": 0.9972,
+      "perturbation_mean_spearman_hub": 0.9985
+    },
+    "G4_bridgehub_and_bilingual_diffusion": {
+      "passed": true,
+      "top5_authorities": [
+        "res_chhoetaigi",
+        "auth_podcast_taigi",
+        "auth_na_association",
+        "res_pts_taigi",
+        "dual_taigi_podcaster"
+      ],
+      "min_bridgehub_crossborder": 0.497718,
+      "max_bridgehub_single_side": 0.0,
+      "min_invisible_link_crossborder": 0.609799,
+      "max_invisible_link_single_side": 0.448584,
+      "ch19_c03_regime": "Infiltration_B_Extinct",
+      "ch19_c08_regime": "Bilingual_Buffer_B_Survives",
+      "ch19_c15_regime": "Direct_Conquest"
+    },
+    "G5_time_slicing_and_survival_format": {
+      "passed": true,
+      "rows_count": 16,
+      "communities": [
+        "taigi_active_crossborder",
+        "dialect_aging_control"
+      ],
+      "nan_count": 0,
+      "z_hub_gini_mean": -0.0,
+      "z_hub_gini_std": 1.0
+    },
+    "G6_graph_theory_and_strong_weak_ties": {
+      "passed": true,
+      "undirected_edges_count": 52,
+      "strong_ties_count": 39,
+      "weak_ties_count": 13,
+      "local_bridges_count": 22,
+      "mean_overlap_strong_ties": 0.1378,
+      "mean_overlap_weak_ties": 0.1296,
+      "mean_overlap_non_cross_border": 0.1445,
+      "mean_overlap_cross_local_diaspora": 0.0943,
+      "percolation_auc_giant_strong_first": 0.7393,
+      "percolation_auc_giant_weak_first": 0.6098,
+      "local_diaspora_disconnect_k_strong_first": 52,
+      "local_diaspora_disconnect_k_weak_first": 47
+    }
+  },
+  "figures_generated_count": 6,
+  "figures": [
+    "output/figures/fig1_network_relationship_graph.png",
+    "output/figures/fig2_authority_vs_hub_scatter.png",
+    "output/figures/fig3_tie_strength_vs_overlap_scatter.png",
+    "output/figures/fig4_percolation_curve.png",
+    "output/figures/fig5_bilingual_phase_diagram.png",
+    "output/figures/fig6_sampling_saturation_and_survival.png"
+  ]
+}

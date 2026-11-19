@@ -1,0 +1,66 @@
+# === macOS & System Junk ===
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+
+# === Python / Environments / Caches ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.mpl_cache/
+*.log
+
+# === Secrets, Env Vars, Auth Cookies & Scraper States ===
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+secrets.json
+secrets.yaml
+credentials.json
+*service_account*.json
+cookies.txt
+*.cookies
+cookie_jar*
+auth_state.json
+*storageState*
+session.json
+
+# === Raw Unmasked Social Media Data & PII (NEVER UPLOAD TO GITHUB) ===
+raw_unmasked/
+*_raw_unmasked*
+*unmasked*.csv
+*unmasked*.json
+*unmasked*.sqlite
+live_scrape/
+demo/data/*_unmasked*
+demo/data/live_*
+*.db-journal
+*.sqlite-journal
+
+# === Copyrighted Materials & Personal Reference PDFs ===
+# Contains personal Gemini conversation link (https://gemini.google.com/app/...) in header/footer
+網路社群資料取得方法與技術.pdf
+# Course textbook PDFs / extracted text (watermarked Cambridge Core & NYCU downloads)
+課本_pdf/
+課本_文字/
+
+# === Temporary Outputs / Tool Reports ===
+/tmp/
+*.tmp
+pre_push_security_report.json
+ai_review_report.md

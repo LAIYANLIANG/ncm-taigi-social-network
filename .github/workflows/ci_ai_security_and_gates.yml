@@ -1,0 +1,166 @@
+name: CI - AI Security, PII Audit & Verification Gates
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  security-and-pii-audit:
+    name: Stage 1 - Secret, PII & Copyright Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks secret & custom privacy rules scan
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITLEAKS_CONFIG: .gitleaks.toml
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run custom project pre-push security & PII scanner
+        run: |
+          python3 cicd_與_安全檢查範本/pre_push_security_check.py \
+            --strict-ci \
+            --report-json pre_push_security_report.json
+
+      - name: Upload security audit report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-audit-report
+          path: pre_push_security_report.json
+
+  automated-verification-gates:
+    name: Stage 2 - Automated Algorithm & Gates (G1-G6)
+    needs: security-and-pii-audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install runtime dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install numpy pandas matplotlib
+
+      - name: Run demo pipeline and verify G1-G6 PASS
+        env:
+          TAIGI_PII_SALT: ${{ secrets.TAIGI_PII_SALT || 'ci_ephemeral_benchmark_salt' }}
+          MPLCONFIGDIR: /tmp/mpl_cache
+        run: |
+          python3 demo/src/run_demo_pipeline.py
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          report_path = Path("demo/output/05_acceptance_verification_report.json")
+          report = json.loads(report_path.read_text(encoding="utf-8"))
+          print("Overall status:", report.get("overall_status"))
+          assert report.get("overall_status") == "PASS", f"Expected PASS, got {report.get('overall_status')}"
+          gates = report.get("gates", {})
+          for gate_id in ("G1", "G2", "G3", "G4", "G5", "G6"):
+              assert gate_id in gates, f"Missing gate {gate_id}"
+              assert gates[gate_id].get("passed") is True, f"Gate {gate_id} failed: {gates[gate_id]}"
+          print("All verification gates G1-G6 passed!")
+          PY
+
+      - name: Upload demo verification artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-outputs
+          path: |
+            demo/output/05_acceptance_verification_report.json
+            demo/output/figures/*.png
+
+  ai-pr-compliance-review:
+    name: Stage 3 - AI Privacy, Ethics & Methodology PR Review
+    needs: [security-and-pii-audit, automated-verification-gates]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run AI PR Diff & Compliance Reviewer
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            python3 cicd_與_安全檢查範本/ai_pr_reviewer.py \
+              --diff-mode pr \
+              --base-sha "${{ github.event.pull_request.base.sha }}" \
+              --head-sha "${{ github.sha }}" \
+              --output-md ai_review_report.md \
+              --strict
+          else
+            python3 cicd_與_安全檢查範本/ai_pr_reviewer.py \
+              --diff-mode workspace \
+              --output-md ai_review_report.md \
+              --strict
+          fi
+
+      - name: Upload AI review report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-pr-review-report
+          path: ai_review_report.md
+
+      - name: Comment AI Review on Pull Request
+        if: github.event_name == 'pull_request' && always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            if (!fs.existsSync('ai_review_report.md')) return;
+            const body = fs.readFileSync('ai_review_report.md', 'utf8');
+            const marker = '<!-- AI-PR-COMPLIANCE-REVIEW -->';
+            const fullBody = `${marker}\n${body}`;
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const existing = comments.find(c => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: fullBody,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: fullBody,
+              });
+            }

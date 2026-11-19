@@ -1,0 +1,82 @@
+[
+  {
+    "batch_id": 1,
+    "platform": "ptt",
+    "region": "local",
+    "doc_count": 300,
+    "batch_tokens": 2400,
+    "cum_tokens_N": 2400,
+    "cum_vocab_V": 2030,
+    "valid_signal_rate": 0.9
+  },
+  {
+    "batch_id": 2,
+    "platform": "youtube",
+    "region": "resource",
+    "doc_count": 350,
+    "batch_tokens": 3100,
+    "cum_tokens_N": 5500,
+    "cum_vocab_V": 3045,
+    "valid_signal_rate": 0.89
+  },
+  {
+    "batch_id": 3,
+    "platform": "web_threads",
+    "region": "local",
+    "doc_count": 400,
+    "batch_tokens": 4200,
+    "cum_tokens_N": 9700,
+    "cum_vocab_V": 4040,
+    "valid_signal_rate": 0.87
+  },
+  {
+    "batch_id": 4,
+    "platform": "reddit",
+    "region": "diaspora",
+    "doc_count": 420,
+    "batch_tokens": 5300,
+    "cum_tokens_N": 15000,
+    "cum_vocab_V": 4990,
+    "valid_signal_rate": 0.91
+  },
+  {
+    "batch_id": 5,
+    "platform": "youtube",
+    "region": "local",
+    "doc_count": 480,
+    "batch_tokens": 6000,
+    "cum_tokens_N": 21000,
+    "cum_vocab_V": 5890,
+    "valid_signal_rate": 0.88
+  },
+  {
+    "batch_id": 6,
+    "platform": "web_threads",
+    "region": "diaspora",
+    "doc_count": 500,
+    "batch_tokens": 6500,
+    "cum_tokens_N": 27500,
+    "cum_vocab_V": 6120,
+    "valid_signal_rate": 0.88
+  },
+  {
+    "batch_id": 7,
+    "platform": "ptt",
+    "region": "local",
+    "doc_count": 600,
+    "batch_tokens": 8000,
+    "cum_tokens_N": 35500,
+    "cum_vocab_V": 8900,
+    "valid_signal_rate": 0.38
+  },
+  {
+    "batch_id": 8,
+    "platform": "reddit",
+    "region": "diaspora",
+    "doc_count": 450,
+    "batch_tokens": 6500,
+    "cum_tokens_N": 34000,
+    "cum_vocab_V": 6310,
+    "valid_signal_rate": 0.9
+  }
+]

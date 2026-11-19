@@ -1,0 +1,42 @@
+# Pre-commit & Pre-push AI/Security hook configuration
+# Install locally via:
+#   pip install pre-commit && pre-commit install --hook-type pre-commit --hook-type pre-push
+# Or use the zero-dependency installer:
+#   bash cicd_與_安全檢查範本/install_git_hooks.sh
+
+default_install_hook_types: [pre-commit, pre-push]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=5000"]
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: check-yaml
+      - id: check-json
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.21.2
+    hooks:
+      - id: gitleaks
+        args: ["--config=.gitleaks.toml", "--redact"]
+
+  - repo: local
+    hooks:
+      - id: taigi-pre-push-security-audit
+        name: Taigi Project Pre-Push Security, PII & Copyright Check
+        entry: python3 cicd_與_安全檢查範本/pre_push_security_check.py --strict-ci
+        language: system
+        pass_filenames: false
+        stages: [pre-commit, pre-push]
+
+      - id: taigi-ai-diff-review
+        name: AI Pre-Push Diff Security & Privacy Review
+        entry: python3 cicd_與_安全檢查範本/ai_pr_reviewer.py --diff-mode workspace
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
