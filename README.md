@@ -87,7 +87,41 @@ python3 cicd_與_安全檢查範本/pre_push_security_check.py --strict-ci
 python3 cicd_與_安全檢查範本/ai_pr_reviewer.py --diff-mode workspace --strict
 ```
 
-驗收報告預設輸出於 [demo/output/05_acceptance_verification_report.json](demo/output/05_acceptance_verification_report.json) 與 [demo/執行成果與驗收報告.md](demo/執行成果與驗收報告.md)，6 張圖表則輸出於 `demo/output/figures/`（包含關係拓撲圖、Authority vs. Hub 散佈圖、Tie Strength vs. Overlap 散佈圖、滲流曲線、雙語相圖、Heaps' Law 與存活切片圖）。
+驗收報告預設輸出於 [demo/output/05_acceptance_verification_report.json](demo/output/05_acceptance_verification_report.json) 與 [demo/執行成果與驗收報告.md](demo/執行成果與驗收報告.md)，6 張圖表則輸出於 `demo/output/figures/`。
+
+---
+
+### 五、視覺化分析成果圖表（圖 1 – 圖 6）
+
+#### 圖 1｜台語社群跨本土與海外「明確網路關係拓撲圖」（Strong/Weak Ties 與 BridgeHubs）
+顯示本土社群（Local）、核心台語數位資源（Resource）、海外社群（Diaspora）、跨海隱形連結樞紐（BridgeHubs）與 Pre-Mortem 過濾隔離區之結構分布；實線為 Strong Ties，橘色虛線為跨圈層 Weak Ties／Local Bridges。
+
+![圖 1：台語社群跨本土與海外明確網路關係拓撲圖](demo/output/figures/fig1_network_relationship_graph.png)
+
+#### 圖 2｜HITS Authorities vs. Hubs 四象限散佈圖（氣泡大小＝BridgeHub 分數）
+左上方 `Q4` 集中高 Hub／高 Bridge 分數之跨海隱形橋接節點（如跨區字幕志工 `Bridge=0.74`、留美台生跨海策展帳號 `Bridge=0.71`、台文懶人包跨國轉發站 `Bridge=0.50`），右下方 `Q2` 則為高權威核心資源（Core Authorities）。
+
+![圖 2：HITS Authorities vs. Hubs 四象限散佈圖](demo/output/figures/fig2_authority_vs_hub_scatter.png)
+
+#### 圖 3｜Strong/Weak Ties 與跨海隱形連結（Invisible Links）結構散佈分析
+左圖（邊層級）顯示跨本土–海外邊之平均鄰居重疊度（`0.0943`）低於非跨海邊（`0.1445`），並存在 `22` 條 `O_uv = 0` 之 Local Bridges；右圖（節點層級）凸顯「低表面被引用量（In-Degree）＋高中介中心性（Betweenness）」的隱形橋接區。
+
+![圖 3：Strong/Weak Ties 與跨海隱形連結結構散佈分析](demo/output/figures/fig3_tie_strength_vs_overlap_scatter.png)
+
+#### 圖 4｜課本 Ch 3.3 滲流測試：強連結鞏固局部，弱連結／局部橋樑維繫全域連通
+依 Onnela et al. 實驗策略移除 `42.3%`（`k=22` 條）邊時，優先移除弱連結／橋樑會使 Giant Component 驟降至 `63.6%` 並碎裂為 `9` 個分量（AUC = `0.6098`），而優先移除強連結仍維持 `90.9%` 與 `3` 個分量（AUC = `0.7393`）。
+
+![圖 4：課本 Ch 3.3 滲流測試曲線](demo/output/figures/fig4_percolation_curve.png)
+
+#### 圖 5｜課本 Ch 19.7B 雙語擴散模擬相圖散點圖（625 組 `(a, c)` 參數演化終態）
+呈現四種平衡區域：台語固守區（`B Maintained`）、雙語緩衝存續區（`Bilingual Buffer Zone`，如實測點 `(1.5, 0.8)`）、滲透淘汰區（`Infiltration`，如實測點 `(1.5, 0.3)`）與直接征服區（`Direct Conquest`，如實測點 `(1.5, 1.5)`）。
+
+![圖 5：課本 Ch 19.7B 雙語擴散模擬相圖散點圖](demo/output/figures/fig5_bilingual_phase_diagram.png)
+
+#### 圖 6｜取樣品質驗證（Heaps' Law + SNR 截斷）與時間切片存活演化軌跡
+左圖顯示語料批次回歸符合 Heaps' Law（$\beta = 0.4446, R^2 = 0.9856$）並自動攔截 `Batch 7` 雜訊批（SNR 斜率 `-0.1143`）；右圖追蹤 `2024Q1 → 2025Q4` 活躍跨海台語社群（往去中心化橋接移動）與老化封閉孤島（往消亡演化）之差異軌跡。
+
+![圖 6：取樣品質驗證與時間切片存活演化散點軌跡](demo/output/figures/fig6_sampling_saturation_and_survival.png)
 
 ---
 
@@ -159,6 +193,40 @@ python3 cicd_與_安全檢查範本/ai_pr_reviewer.py --diff-mode workspace --st
 
 ---
 
+### 5. Visual Results & Network Graphs (Figures 1–6)
+
+#### Figure 1 | Cross-Border Taigi Network Topology (Strong/Weak Ties & BridgeHubs)
+Maps Local Taiwan, Core Digital Resource, Overseas Diaspora, cross-border `BridgeHubs`, and Pre-Mortem filtered periphery nodes, distinguishing embedded strong ties (solid lines) from local bridges / weak ties (dashed lines).
+
+![Figure 1: Cross-Border Taigi Network Topology](demo/output/figures/fig1_network_relationship_graph.png)
+
+#### Figure 2 | HITS Authorities vs. Hubs Quadrant Scatter Plot (Bubble Size = BridgeHub Score)
+Highlights `Q4` pure cross-border aggregators / invisible hubs (e.g., subtitle volunteer `Bridge=0.74`, US student curator `Bridge=0.71`, infographic hub `Bridge=0.50`) versus `Q2` Core Authorities.
+
+![Figure 2: HITS Authorities vs. Hubs Scatter Plot](demo/output/figures/fig2_authority_vs_hub_scatter.png)
+
+#### Figure 3 | Strong/Weak Ties & Invisible Cross-Border Links Structure
+Edge-level scatter (left) contrasts lower average overlap on cross-border ties (`0.0943`) vs. non-cross-border ties (`0.1445`) with `22` local bridges (`O_uv = 0`); node-level scatter (right) pinpoints low In-Degree, high Betweenness "invisible links."
+
+![Figure 3: Strong/Weak Ties and Invisible Links Scatter](demo/output/figures/fig3_tie_strength_vs_overlap_scatter.png)
+
+#### Figure 4 | Ch. 3.3 Percolation Test: Strong Ties Cohese Locally, Weak Ties Connect Globally
+Removing `42.3%` (`k=22`) weak/bridge ties drops the Giant Component to `63.6%` (`9` components, AUC = `0.6098`), whereas removing strong/high-overlap ties retains `90.9%` (`3` components, AUC = `0.7393`).
+
+![Figure 4: Ch. 3.3 Percolation Test](demo/output/figures/fig4_percolation_curve.png)
+
+#### Figure 5 | Ch. 19.7B Bilingual Diffusion Phase Diagram (625 `(a, c)` Parameter Pairs)
+Illustrates four equilibrium regimes: `B Maintained`, `Bilingual Buffer Zone` (`(1.5, 0.8)`), `Infiltration` (`(1.5, 0.3)`), and `Direct Conquest` (`(1.5, 1.5)`).
+
+![Figure 5: Ch. 19.7B Bilingual Diffusion Phase Diagram](demo/output/figures/fig5_bilingual_phase_diagram.png)
+
+#### Figure 6 | Sampling Quality Validation (Heaps' Law + SNR Cutoff) & Time-Slice Survival Trajectories
+Shows Heaps' Law saturation fit ($\beta = 0.4446, R^2 = 0.9856$) with automated rejection of noisy `Batch 7` (SNR slope `-0.1143`) alongside `2024Q1 → 2025Q4` Hub Gini vs. Global Clustering trajectories.
+
+![Figure 6: Sampling Quality Validation & Survival Trajectories](demo/output/figures/fig6_sampling_saturation_and_survival.png)
+
+---
+
 <a id="ja"></a>
 
 ## 🇯🇵 日本語
@@ -213,6 +281,40 @@ python3 cicd_與_安全檢查範本/ai_pr_reviewer.py --diff-mode workspace --st
 
 ---
 
+### 5. 可視化分析結果（図 1 ～ 図 6）
+
+#### 図 1｜台湾語コミュニティの国内・海外「ネットワーク関係トポロジー図」（Strong/Weak Ties・BridgeHubs）
+台湾国内（Local）、デジタル中核リソース（Resource）、海外（Diaspora）、越境ブリッジハブ（BridgeHubs）、Pre-Mortem ノイズ隔離区の構造と強・弱連結の分布を可視化しています。
+
+![図 1：台湾語コミュニティのネットワーク関係トポロジー図](demo/output/figures/fig1_network_relationship_graph.png)
+
+#### 図 2｜HITS Authorities vs. Hubs 4 象限散布図（バブルサイズ＝BridgeHub スコア）
+左上 `Q4` に位置する越境仲介ハブ（字幕ボランティア `Bridge=0.74`、在米留学生キュレーター `Bridge=0.71` 等）と、右下 `Q2` の中核権威ノード（Core Authorities）を対比しています。
+
+![図 2：HITS Authorities vs. Hubs 4 象限散布図](demo/output/figures/fig2_authority_vs_hub_scatter.png)
+
+#### 図 3｜Strong/Weak Ties と越境「見えないつながり」の構造散布分析
+エッジ単位（左）では越境エッジの低い近傍重複度（平均 `0.0943` vs. 非越境 `0.1445`）と `22` 本の局所ブリッジ（`O_uv = 0`）を、ノード単位（右）では低被参照・高媒介中心性の隠れた架け橋を抽出しています。
+
+![図 3：Strong/Weak Ties と越境見えないつながりの構造散布分析](demo/output/figures/fig3_tie_strength_vs_overlap_scatter.png)
+
+#### 図 4｜第 3.3 節パーコレーション実験：強い結びつきは局所結束、弱い結びつきは全体連結を維持
+`42.3%`（`k=22` 本）削除時点で、弱い結びつき優先削除は Giant Component が `63.6%` まで急落し `9` 成分に分裂（AUC = `0.6098`）する一方、強い結びつき優先削除は `90.9%`・`3` 成分（AUC = `0.7393`）を保ちます。
+
+![図 4：第 3.3 節パーコレーション曲線](demo/output/figures/fig4_percolation_curve.png)
+
+#### 図 5｜第 19.7B 節バイリンガル普及相図散布図（625 通りの `(a, c)` パラメータ均衡）
+言語維持区（`B Maintained`）、バイリンガル緩衝共存区（`(1.5, 0.8)`）、浸透淘汰区（`(1.5, 0.3)`）、直接置換区（`(1.5, 1.5)`）の 4 相を示しています。
+
+![図 5：第 19.7B 節バイリンガル普及相図散布図](demo/output/figures/fig5_bilingual_phase_diagram.png)
+
+#### 図 6｜サンプリング品質検証（Heaps' Law + SNR 遮断）と時系列生存軌跡
+Heaps' Law 飽和曲線（$\beta = 0.4446, R^2 = 0.9856$）によるノイズバッチ `Batch 7`（SNR 勾配 `-0.1143`）自動除外と、`2024Q1 → 2025Q4` の Hub Gini／クラスタリング推移を比較しています。
+
+![図 6：サンプリング品質検証と時系列生存軌跡](demo/output/figures/fig6_sampling_saturation_and_survival.png)
+
+---
+
 <a id="ko"></a>
 
 ## 🇰🇷 한국어
@@ -264,3 +366,37 @@ python3 cicd_與_安全檢查範本/pre_push_security_check.py --strict-ci
 # 4. AI PR/Diff 규정 준수 검토 실행 (GEMINI_API_KEY 미설정 시 오프라인 휴리스틱 모드로 자동 동작)
 python3 cicd_與_安全檢查範本/ai_pr_reviewer.py --diff-mode workspace --strict
 ```
+
+---
+
+### 5. 시각화 분석 결과 (그림 1 – 그림 6)
+
+#### 그림 1 | 대만어 커뮤니티 국내외 '네트워크 관계 토폴로지' (Strong/Weak Ties & BridgeHubs)
+대만 현지(Local), 핵심 디지털 자원(Resource), 해외(Diaspora), 국경 간 가교 허브(BridgeHubs) 및 Pre-Mortem 필터링 노드의 분포와 강/약 연결 구조를 나타냅니다.
+
+![그림 1: 대만어 커뮤니티 네트워크 관계 토폴로지](demo/output/figures/fig1_network_relationship_graph.png)
+
+#### 그림 2 | HITS Authorities vs. Hubs 4분면 산점도 (버블 크기 = BridgeHub 점수)
+좌상단 `Q4`의 국경 간 중계 허브(자막 봉사자 `Bridge=0.74`, 재미 유학생 큐레이터 `Bridge=0.71` 등)와 우하단 `Q2`의 핵심 권위 노드(Core Authorities)를 대비합니다.
+
+![그림 2: HITS Authorities vs. Hubs 4분면 산점도](demo/output/figures/fig2_authority_vs_hub_scatter.png)
+
+#### 그림 3 | Strong/Weak Ties 및 국경 간 '보이지 않는 연결' 구조 산점 분석
+엣지 수준(좌)에서는 초국적 엣지의 낮은 이웃 중복도(평균 `0.0943` vs. 비초국적 `0.1445`)와 `22`개의 국소 브리지(`O_uv = 0`)를, 노드 수준(우)에서는 낮은 인용량 대비 높은 매개 중심성을 지닌 숨은 연결 노드를 포착합니다.
+
+![그림 3: Strong/Weak Ties 및 보이지 않는 연결 구조 산점 분석](demo/output/figures/fig3_tie_strength_vs_overlap_scatter.png)
+
+#### 그림 4 | 3.3절 퍼콜레이션 테스트: 강한 연결은 지역 결속, 약한 연결은 전역 연결 유지
+엣지 `42.3%`(`k=22`개) 제거 시 약한 연결 우선 제거는 Giant Component가 `63.6%`(`9`개 컴포넌트, AUC = `0.6098`)로 급락하는 반면, 강한 연결 우선 제거는 `90.9%`(`3`개 컴포넌트, AUC = `0.7393`)를 유지합니다.
+
+![그림 4: 3.3절 퍼콜레이션 곡선](demo/output/figures/fig4_percolation_curve.png)
+
+#### 그림 5 | 19.7B절 이중언어 확산 상평형 산점도 (625개 `(a, c)` 파라미터 조합)
+언어 유지 구역(`B Maintained`), 이중언어 완충 공존 구역(`(1.5, 0.8)`), 침투 도태 구역(`(1.5, 0.3)`), 직접 대체 구역(`(1.5, 1.5)`)의 4가지 균형 상태를 시각화합니다.
+
+![그림 5: 19.7B절 이중언어 확산 상평형 산점도](demo/output/figures/fig5_bilingual_phase_diagram.png)
+
+#### 그림 6 | 표본 품질 검증(Heaps' Law + SNR 차단) 및 시계열 생존 궤적
+Heaps' Law 포화 적합($\beta = 0.4446, R^2 = 0.9856$)을 통한 노이즈 배치 `Batch 7`(SNR 기울기 `-0.1143`) 자동 차단과 `2024Q1 → 2025Q4` 허브 지니계수·군집계수 변화 궤적을 보여줍니다.
+
+![그림 6: 표본 품질 검증 및 시계열 생존 궤적](demo/output/figures/fig6_sampling_saturation_and_survival.png)
